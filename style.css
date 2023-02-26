@@ -18,12 +18,14 @@
   width:100%;
   min-height: 100vh;
   
-  background: url('https://i.postimg.cc/tT93Yz56/IMG-3911.jpg'); 
+  background:linear-gradient(rgba(0, 0, 0, 0.60), rgba(0, 0, 0, 0.60)),  url('https://i.postimg.cc/tT93Yz56/IMG-3911.jpg'); 
   background-size:cover;
   background-position:center;
   display:flex;
   justify-content: center;
   align-items:center; 
+   padding: 15%;
+ 
 }
 
 .textBx h2 {
@@ -209,6 +211,17 @@ section{
   color:#111;
 }
 
+.img-container{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  
+}
+.img-container img{
+  width:100%;
+  height: 100%;
+}
+
 .trifecta .cards{
   display:flex;
   flex-wrap:wrap;
@@ -369,30 +382,7 @@ section{
   resize:none;
 }
 
-.contactForm .inputBox input[type="submit"]{
-  font-size:1em;
-  color:#fff;
-  background:#ff0157;
-  display:inline-block;
-  text-transform:uppercase;
-  text-decoration:none;
-  letter-spacing:2px;
-  transition:0.5s;
-  max-width:100px;
-  font-weight:500;
-  border:none;
-  cursor:pointer;
-  
-}
-.social{
-  display:grid;
-  place-items:center;
-  height:100vh;
-  width:100%;
-  background: linear-gradient(315deg, #fff 0%, #ddd);
-  font-family: 'Zen Kaku Gothic Antique', sans-serif;
- 
-}
+
 
 .container .mediaBox {
 	display: inline-block;
@@ -626,11 +616,16 @@ section{
 }
 @media (max-width:480px)
 {
+  .banner{
+    background:linear-gradient(rgba(0, 0, 0, 0.60), rgba(0, 0, 0, 0.60)),  url('https://i.postimg.cc/t4RpTn9r/267844865-107448655126112-9123459453524874472-n.jpg');
+     background-repeat: no-repeat;
+        background-size:cover !important;
+        background-position: center;
+        overflow: hidden;
+    
+  }
   .banner .content h2{
     font-size:2.2em;
     color:#fff;
   }
 }
-  
-  
-
