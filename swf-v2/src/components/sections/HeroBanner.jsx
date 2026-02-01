@@ -1,37 +1,66 @@
 'use client';
 
-import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from 'react';
+
+const HERO_IMAGES = [
+  '/swf-background(1).jpg',
+  '/swf-background(2).jpg',
+  '/swf-background(9).jpg',
+  '/swf-background(4).jpg',
+  '/swf-background(8).jpg',
+  '/swf-background(10).jpg',
+
+];
 
 export default function HeroBanner() {
+  const [currentImage, setCurrentImage] = useState(0);
+  const [bgPosition, setBgPosition] = useState('center');
+
+  // Handle background position (mobile vs desktop)
+  useEffect(() => {
+    const updateBgPosition = () => {
+      if (window.innerWidth < 768) {
+        setBgPosition('50% 30%');
+      } else {
+        setBgPosition('center');
+      }
+    };
+
+    updateBgPosition();
+    window.addEventListener('resize', updateBgPosition);
+    return () => window.removeEventListener('resize', updateBgPosition);
+  }, []);
+
+  // Rotate images
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % HERO_IMAGES.length);
+    }, 6000); // 6 seconds per image
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section
       id="home"
       className="relative min-h-screen flex items-center justify-center text-white overflow-hidden"
     >
-      {/* Background Image - Smaller on mobile for readability */}
-      <motion.div
-        className="absolute inset-0 md:inset-0"
-        style={{
-          width: 'clamp(100%, 120%, 100%)',
-          height: '100%',
-          left: '50%',
-          top: '50%',
-          transform: 'translate(-50%, -50%)',
-        }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.2, ease: 'easeOut' }}
-      >
-        <Image
-          src="/swf-background(1).jpg"
-          alt="SWF No Love Lost Banner"
-          fill
-          className="object-cover"
-          priority
-          quality={85}
+      {/* Background Slideshow */}
+      <AnimatePresence>
+        <motion.div
+          key={HERO_IMAGES[currentImage]}
+          className="absolute inset-0 bg-cover"
+          style={{
+            backgroundImage: `url('${HERO_IMAGES[currentImage]}')`,
+            backgroundPosition: bgPosition,
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.5, ease: 'easeInOut' }}
         />
-      </motion.div>
+      </AnimatePresence>
 
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-black/70" />
@@ -41,7 +70,7 @@ export default function HeroBanner() {
         className="relative z-10 max-w-4xl px-6 flex flex-col items-center text-center"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, ease: 'easeOut', delay: 0.3 }}
+        transition={{ duration: 0.9, ease: 'easeOut' }}
       >
         <h1 className="text-4xl md:text-6xl font-extrabold uppercase tracking-wide">
           SWF No Love Lost
@@ -59,7 +88,7 @@ export default function HeroBanner() {
           className="mt-10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: 'easeOut', delay: 0.8 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
         >
           <a
             href="https://buytickets.at/swflive/1531832"
