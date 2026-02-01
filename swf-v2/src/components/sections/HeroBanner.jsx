@@ -1,22 +1,48 @@
+'use client';
+
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+
 export default function HeroBanner() {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center text-white"
+      className="relative min-h-screen flex items-center justify-center text-white overflow-hidden"
     >
-      {/* Background Image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
+      {/* Background Image - Smaller on mobile for readability */}
+      <motion.div
+        className="absolute inset-0 md:inset-0"
         style={{
-          backgroundImage: "url('/never-say-die-banner.png')",
+          width: 'clamp(100%, 120%, 100%)',
+          height: '100%',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
         }}
-      />
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2, ease: 'easeOut' }}
+      >
+        <Image
+          src="/swf-background(1).jpg"
+          alt="SWF No Love Lost Banner"
+          fill
+          className="object-cover"
+          priority
+          quality={85}
+        />
+      </motion.div>
 
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-black/70" />
 
       {/* Content */}
-      <div className="relative z-10 max-w-4xl px-6 flex flex-col items-center text-center">
+      <motion.div
+        className="relative z-10 max-w-4xl px-6 flex flex-col items-center text-center"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, ease: 'easeOut', delay: 0.3 }}
+      >
         <h1 className="text-4xl md:text-6xl font-extrabold uppercase tracking-wide">
           SWF No Love Lost
         </h1>
@@ -29,8 +55,12 @@ export default function HeroBanner() {
           Doors open at 4:00 PM · Bell time 5:00 PM
         </p>
 
-        {/* CTA */}
-        <div className="mt-10">
+        <motion.div
+          className="mt-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: 'easeOut', delay: 0.8 }}
+        >
           <a
             href="https://buytickets.at/swflive/1531832"
             target="_blank"
@@ -39,8 +69,8 @@ export default function HeroBanner() {
           >
             Buy Tickets Now
           </a>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
