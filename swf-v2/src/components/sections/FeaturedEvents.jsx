@@ -41,7 +41,7 @@ export default function FeaturedEvents({ events }) {
 
           <div className="mt-8 flex gap-4">
             <a
-              href={events.link}
+              href={events[0].link}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-red-600 hover:bg-red-700 transition px-6 py-3 font-semibold uppercase tracking-wide"

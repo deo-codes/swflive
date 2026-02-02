@@ -4,11 +4,14 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 
 const PROMOTIONS = [
-  { name: 'SWF Live', logo: '/iwtv/promotions/swf-logo.png', scale: 1.15 },
+  { name: 'Bronx Wrestling Federation', logo: '/iwtv/promotions/bwf-logo.png', scale: 1.15 },
   { name: 'Intense Wrestling Alliance', logo: '/iwtv/promotions/iwa-logo.png', scale: 1.15 },
   { name: 'Stand Alone Wrestling', logo: '/iwtv/promotions/stand-alone.png', scale: 1.25 },
   { name: 'Project Codename: Wrestling', logo: '/iwtv/promotions/project-logo.png', scale: 1.3 },
   { name: 'Shore Star Wrestling', logo: '/iwtv/promotions/ssw-logo.png', scale: 1.3 },
+  { name: 'Pro Wrestling After Dark', logo: '/iwtv/promotions/pwad-logo.png', scale: 1.3 },
+  { name: 'Pro Wrestling Magic', logo: '/iwtv/promotions/prowrestlingmagic-logo.png', scale: 1.2 },
+
 ];
 
 export default function IWTVSection() {
@@ -46,7 +49,7 @@ export default function IWTVSection() {
           </div>
 
           <h2 className="mt-8 text-4xl md:text-5xl font-extrabold uppercase tracking-wide">
-            Watch SWF on IWTV
+            Watch The SWF Library on IWTV
           </h2>
 
           <p className="mt-6 text-gray-300 text-lg">

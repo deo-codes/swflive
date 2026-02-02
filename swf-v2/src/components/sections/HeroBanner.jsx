@@ -3,6 +3,9 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
+/**
+ * Background images for hero slideshow
+ */
 const HERO_IMAGES = [
   '/swf-background(1).jpg',
   '/swf-background(2).jpg',
@@ -10,14 +13,16 @@ const HERO_IMAGES = [
   '/swf-background(4).jpg',
   '/swf-background(8).jpg',
   '/swf-background(10).jpg',
-
 ];
 
 export default function HeroBanner() {
   const [currentImage, setCurrentImage] = useState(0);
   const [bgPosition, setBgPosition] = useState('center');
 
-  // Handle background position (mobile vs desktop)
+  /**
+   * Adjust background position for mobile vs desktop
+   * Mobile crops slightly higher to keep faces centered
+   */
   useEffect(() => {
     const updateBgPosition = () => {
       if (window.innerWidth < 768) {
@@ -32,7 +37,9 @@ export default function HeroBanner() {
     return () => window.removeEventListener('resize', updateBgPosition);
   }, []);
 
-  // Rotate images
+  /**
+   * Rotate background images on interval
+   */
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % HERO_IMAGES.length);
@@ -62,43 +69,39 @@ export default function HeroBanner() {
         />
       </AnimatePresence>
 
-      {/* Dark Overlay */}
+      {/* Dark Overlay for Readability */}
       <div className="absolute inset-0 bg-black/70" />
 
-      {/* Content */}
+      {/* Hero Content */}
       <motion.div
         className="relative z-10 max-w-4xl px-6 flex flex-col items-center text-center"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, ease: 'easeOut' }}
       >
+        {/* Headline with subtle animated underline on "Unhinged" */}
         <h1 className="text-4xl md:text-6xl font-extrabold uppercase tracking-wide">
-          SWF No Love Lost
+          The{' '}
+          <span className="relative inline-block">
+            Unhinged
+            {/* Animated underline */}
+            <motion.span
+              className="absolute left-0 -bottom-2 h-[3px] w-full bg-red-600"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.6, delay: 0.6, ease: 'easeOut' }}
+              style={{ transformOrigin: 'left' }}
+            />
+          </span>{' '}
+          Era Begins
         </h1>
 
-        <p className="mt-6 text-lg md:text-xl leading-relaxed text-gray-200">
-          SWF Live returns to Port Monmouth for February&apos;s event,
-          <span className="font-semibold text-white"> No Love Lost</span> on
-          <span className="font-semibold text-white"> Saturday, February 15th</span>.
+        {/* Supporting Brand Statement */}
+        <p className="mt-6 text-lg md:text-xl leading-relaxed text-gray-200 max-w-2xl">
+          A new chapter of SWF Pro Wrestling is here.
           <br />
-          Doors open at 4:00 PM · Bell time 5:00 PM
+          Harder hits. Louder crowds. No limits.
         </p>
-
-        <motion.div
-          className="mt-10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-        >
-          <a
-            href="https://buytickets.at/swflive/1531832"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block bg-red-600 hover:bg-red-700 transition px-8 py-4 text-lg font-semibold uppercase tracking-wide"
-          >
-            Buy Tickets Now
-          </a>
-        </motion.div>
       </motion.div>
     </section>
   );
