@@ -16,7 +16,7 @@ const PROMOTIONS = [
 
 export default function IWTVSection() {
   return (
-    <section className="relative bg-black text-white overflow-hidden">
+    <section id="iwtv" className="relative bg-black text-white overflow-hidden">
 
       {/* Background */}
       <div

@@ -6,19 +6,19 @@ export default function EventsHero() {
   return (
     <section className="relative h-[65vh] min-h-[420px] flex items-center justify-center text-white overflow-hidden">
 
-      {/* Background Image */}
+      {/* Background Image (visual only, no pointer events) */}
       <motion.div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-cover bg-center pointer-events-none"
         style={{ backgroundImage: "url('/swf-background(11).jpg')" }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.2, ease: 'easeOut' }}
       />
 
-      {/* Overlay for readability */}
-      <div className="absolute inset-0 bg-black/70" />
+      {/* Dark Overlay (visual only) */}
+      <div className="absolute inset-0 bg-black/70 pointer-events-none" />
 
-      {/* Content */}
+      {/* Hero Content (clickable layer) */}
       <motion.div
         className="relative z-10 max-w-3xl px-6 text-center"
         initial={{ opacity: 0, y: 40 }}
@@ -36,8 +36,8 @@ export default function EventsHero() {
         </p>
       </motion.div>
 
-      {/* Bottom fade to transition into content */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent" />
+      {/* Bottom gradient fade for smooth transition */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent pointer-events-none" />
 
     </section>
   );

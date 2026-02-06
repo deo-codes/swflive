@@ -2,34 +2,36 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-
-const NAV_ITEMS = [
-  { label: 'Home', id: 'home' },
-  { label: 'About', id: 'about' },
-  { label: 'IWTV', id: 'iwtv' },
-];
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function Header() {
-  const [isSticky, setIsSticky] = useState(false);
+  const pathname = usePathname();
+  const isHome = pathname === '/';
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
 
-  // Sticky header + active section tracking (same-page sections only)
+  /**
+   * Track active section ONLY on the home page
+   */
   useEffect(() => {
-    const handleScroll = () => {
-      setIsSticky(window.scrollY > 0);
+    if (!isHome) return;
 
+    const sections = ['home', 'about', 'iwtv'];
+
+    const handleScroll = () => {
       const scrollPosition = window.scrollY + 120;
 
-      NAV_ITEMS.forEach((item) => {
-        const section = document.getElementById(item.id);
-        if (section) {
-          const top = section.offsetTop;
-          const height = section.offsetHeight;
+      sections.forEach((id) => {
+        const section = document.getElementById(id);
+        if (!section) return;
 
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(item.id);
-          }
+        const top = section.offsetTop;
+        const height = section.offsetHeight;
+
+        if (scrollPosition >= top && scrollPosition < top + height) {
+          setActiveSection(id);
         }
       });
     };
@@ -38,27 +40,48 @@ export default function Header() {
     handleScroll();
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isHome]);
 
-  // Smooth scroll handler (same-page only)
-  const handleNavClick = (id) => (e) => {
-    e.preventDefault();
-    const section = document.getElementById(id);
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-    }
-    setMenuOpen(false);
-  };
+  /**
+   * Handle hash-based scrolling (Next.js App Router fix)
+   * Works for:
+   * - /#about
+   * - /#iwtv
+   * - /events → /#iwtv
+   * - page refresh on hash
+   */
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handleHashScroll = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (!hash) return;
+
+      const section = document.getElementById(hash);
+      if (section) {
+        setTimeout(() => {
+          section.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    };
+
+    handleHashScroll();
+    window.addEventListener('hashchange', handleHashScroll);
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashScroll);
+    };
+  }, []);
 
   const linkClasses = (id) =>
     `transition ${
-      activeSection === id
+      activeSection === id && isHome
         ? 'text-red-500 font-semibold'
         : 'hover:text-red-500'
     }`;
 
   return (
-    <header className={`fixed top-0 w-full z-50 ${isSticky ? 'bg-black' : 'bg-black'}`}>
+    <header className="fixed top-0 w-full z-50 bg-black">
       <nav className="max-w-7xl mx-auto px-6 py-4 text-white">
 
         {/* DESKTOP NAV */}
@@ -67,28 +90,24 @@ export default function Header() {
           {/* LEFT LINKS */}
           <ul className="flex gap-6 justify-start">
             <li>
-              <a
-                href="#home"
-                onClick={handleNavClick('home')}
-                className={linkClasses('home')}
-              >
+              <Link href="/" className={linkClasses('home')}>
                 Home
-              </a>
+              </Link>
             </li>
+
             <li>
-              <a
-                href="#about"
-                onClick={handleNavClick('about')}
+              <Link
+                href={isHome ? '#about' : '/#about'}
                 className={linkClasses('about')}
               >
                 About
-              </a>
+              </Link>
             </li>
           </ul>
 
-          {/* CENTER LOGO */}
+          {/* LOGO */}
           <div className="flex justify-center">
-            <a href="#home" onClick={handleNavClick('home')}>
+            <Link href="/" onClick={() => setMenuOpen(false)}>
               <Image
                 src="/swf-logo.png"
                 alt="SWF Wrestling"
@@ -97,27 +116,24 @@ export default function Header() {
                 priority
                 className="object-contain"
               />
-            </a>
+            </Link>
           </div>
 
           {/* RIGHT LINKS */}
           <ul className="flex gap-6 justify-end">
             <li>
-              <a
-                href="/events"
-                className="hover:text-red-500 transition"
-              >
+              <Link href="/events" className="hover:text-red-500 transition">
                 Events
-              </a>
+              </Link>
             </li>
+
             <li>
-              <a
-                href="#iwtv"
-                onClick={handleNavClick('iwtv')}
+              <Link
+                href={isHome ? '#iwtv' : '/#iwtv'}
                 className={linkClasses('iwtv')}
               >
                 IWTV
-              </a>
+              </Link>
             </li>
           </ul>
 
@@ -125,7 +141,7 @@ export default function Header() {
 
         {/* MOBILE BAR */}
         <div className="md:hidden flex items-center justify-between">
-          <a href="#home" onClick={handleNavClick('home')}>
+          <Link href="/" onClick={() => setMenuOpen(false)}>
             <Image
               src="/swf-logo.png"
               alt="SWF Wrestling"
@@ -134,7 +150,7 @@ export default function Header() {
               priority
               className="object-contain"
             />
-          </a>
+          </Link>
 
           <button
             onClick={() => setMenuOpen(!menuOpen)}
@@ -150,28 +166,34 @@ export default function Header() {
           <div className="md:hidden mt-4 border-t border-gray-800">
             <ul className="flex flex-col text-center py-4 gap-4">
 
-              {/* Same-page links */}
-              {NAV_ITEMS.map((item) => (
-                <li key={item.id}>
-                  <a
-                    href={`#${item.id}`}
-                    onClick={handleNavClick(item.id)}
-                    className={linkClasses(item.id)}
-                  >
-                    {item.label}
-                  </a>
-                </li>
-              ))}
-
-              {/* Page route */}
               <li>
-                <a
-                  href="/events"
-                  className="hover:text-red-500 transition"
+                <Link href="/" onClick={() => setMenuOpen(false)}>
+                  Home
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  href={isHome ? '#about' : '/#about'}
                   onClick={() => setMenuOpen(false)}
                 >
+                  About
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/events" onClick={() => setMenuOpen(false)}>
                   Events
-                </a>
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  href={isHome ? '#iwtv' : '/#iwtv'}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  IWTV
+                </Link>
               </li>
 
             </ul>

@@ -55,12 +55,13 @@ export default function EventsPage() {
 
                 <div>
                   <span className="block uppercase text-sm tracking-widest text-gray-500">
-                    What to Expect
+                    Ticket Prices
                   </span>
                   <ul className="list-disc list-inside text-gray-400 space-y-1">
-                    <li>Hard-hitting live action</li>
-                    <li>Meet & greet opportunities</li>
-                    <li>Merchandise available</li>
+                    <li>General Admission - $30.00</li>
+                    <li>First Row - $35.00</li>
+                    <li>Second Row - $35.00</li>
+                    <li>Family Pack - $110.00</li>
                     <li>Card subject to change</li>
                   </ul>
                 </div>
