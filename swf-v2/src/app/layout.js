@@ -2,6 +2,8 @@ import './globals.css';
 import { Bebas_Neue, Inter } from 'next/font/google';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import BackToTop from '@/components/ui/BackToTop';
+
 
 const bebas = Bebas_Neue({
   subsets: ['latin'],
@@ -26,6 +28,7 @@ export default function RootLayout({ children }) {
         <Header />
         <main className="pt-20">{children}</main>
         <Footer />
+        <BackToTop />
       </body>
     </html>
   );

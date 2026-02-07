@@ -109,7 +109,7 @@ export default function Footer() {
 
       {/* BOTTOM BAR */}
       <div className="border-t border-gray-800 py-6 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} Superstars of Wrestling. All rights reserved.
+        © {new Date().getFullYear()} Superstars of Wrestling. All rights reserved. Developed by Deoshai "Deo" Patterson.
       </div>
     </footer>
   );
